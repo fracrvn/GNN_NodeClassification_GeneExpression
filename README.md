@@ -2,7 +2,7 @@
 
 This project focuses on tumor subtype classification (Luminal A / Luminal B) from gene expression profiles, comparing an MLP baseline with graph-based models (GCN/GAT), including a contrastive variant with **Cosine Center Loss**.
 
-It was developed for the **laboratory component of a university exam**.
+It was developed for the **laboratory component of the "AI for BioInformatics" exam**.
 
 ## Highlights
 
