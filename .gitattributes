@@ -1,7 +1,7 @@
 * text=auto eol=lf
 
-*.ipynb binary
 *.pdf binary
 *.png binary
 *.jpg binary
 *.jpeg binary
+*.ipynb text eol=lf

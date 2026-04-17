@@ -6,5 +6,6 @@ authors:
   - family-names: "Carretti Vandelli"
     given-names: "Francesco"
 repository-code: "https://github.com/fracrvn/GNN_NodeClassification_GeneExpression"
+url: "https://github.com/fracrvn/GNN_NodeClassification_GeneExpression"
 license: "MIT"
 abstract: "Project for tumor subtype classification (Luminal A vs Luminal B) from gene expression profiles, comparing MLP, GCN, and GAT models with optional Cosine Center Loss."
