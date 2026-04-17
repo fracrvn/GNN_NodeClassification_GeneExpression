@@ -1,20 +1,22 @@
 # GNN Node Classification on Gene Expression (Luminal A vs Luminal B)
 
-Progetto di classificazione di sottotipi tumorali (Luminal A / Luminal B) a partire da profili di espressione genica, con confronto tra baseline MLP e modelli su grafo (GCN/GAT), inclusa una variante contrastiva con **Cosine Center Loss**.
+This project focuses on tumor subtype classification (Luminal A / Luminal B) from gene expression profiles, comparing an MLP baseline with graph-based models (GCN/GAT), including a contrastive variant with **Cosine Center Loss**.
 
-## Contenuto della repository
+It was developed for the **laboratory component of a university exam**.
+
+## Repository Contents
 
 ```text
 .
 ├── code/
-│   ├── main.ipynb              # pipeline completa: EDA → grafo → training → analisi statistica
-│   ├── models.py               # MLP, GNN (GCN/GAT), classificatori linear/mlp, loss combinata
-│   ├── utils.py                # training loop, early stopping, statistiche, plotting, t-test corretto
-│   └── cosine_center_loss.py   # implementazione Cosine Center Loss
+│   ├── main.ipynb              # full pipeline: EDA → graph construction → training → statistical analysis
+│   ├── models.py               # MLP, GNN (GCN/GAT), linear/mlp heads, combined loss
+│   ├── utils.py                # training loop, early stopping, statistics, plotting, corrected t-test
+│   └── cosine_center_loss.py   # Cosine Center Loss implementation
 ├── dataset/
-│   └── dataset_LUMINAL_A_B.csv # dataset usato negli esperimenti
+│   └── dataset_LUMINAL_A_B.csv # dataset used in experiments
 ├── docs/
-│   └── presentation.pdf        # materiale di supporto
+│   └── presentation.pdf        # supporting material
 ├── requirements.txt
 └── LICENSE
 ```
@@ -22,77 +24,77 @@ Progetto di classificazione di sottotipi tumorali (Luminal A / Luminal B) a part
 ## Dataset
 
 - File: `dataset/dataset_LUMINAL_A_B.csv`
-- Campioni: **100**
-- Classi: **Luminal A (50)** e **Luminal B (50)** (colonna `l`)
-- Feature: espressione genica (colonne ENSG)
+- Samples: **100**
+- Classes: **Luminal A (50)** and **Luminal B (50)** (column `l`)
+- Features: gene expression values (ENSG columns)
 
-## Pipeline sperimentale (notebook `code/main.ipynb`)
+## Experimental Pipeline (`code/main.ipynb`)
 
-1. **Import e configurazione ambiente**
-2. **Caricamento dataset e pulizia label**
+1. **Environment setup and imports**
+2. **Dataset loading and label cleaning**
 3. **EDA**:
-   - controllo struttura e qualità dati
-   - distribuzioni, varianza, sparsity, bilanciamento classi
-   - PCA e analisi correlazioni
-4. **Costruzione grafo**:
-   - trasformazione log2 + filtro geni poco espressi
-   - standardizzazione per gene
-   - grafo KNN (`k=5`, metrica correlation), conversione in `torch_geometric.data.Data`
-   - analisi omofilia globale e locale
-5. **Training e confronto modelli**:
+   - data quality and structure checks
+   - distribution, variance, sparsity, class balance
+   - PCA and correlation analysis
+4. **Graph construction**:
+   - log2 transform + low-expression gene filtering
+   - gene-wise standardization
+   - KNN graph (`k=5`, correlation metric), converted to `torch_geometric.data.Data`
+   - global and local homophily analysis
+5. **Training and model comparison**:
    - MLP baseline
-   - GCN/GAT con classifier lineare o MLP
-   - versioni contrastive con Cosine Center Loss
-   - variante con blocco di proiezione (`ProjectedGNN`)
-6. **Valutazione statistica**:
-   - Repeated Stratified K-Fold (`5 x 20` fold)
-   - split interno train/validation
-   - metriche: Accuracy e Silhouette (cosine)
-   - confronto tra modelli con t-test corretto (Nadeau & Bengio)
+   - GCN/GAT with linear or MLP classifier heads
+   - contrastive variants with Cosine Center Loss
+   - projection-based variant (`ProjectedGNN`)
+6. **Statistical evaluation**:
+   - Repeated Stratified K-Fold (`5 x 20` folds)
+   - internal train/validation split
+   - metrics: Accuracy and cosine Silhouette
+   - model comparison with corrected t-test (Nadeau & Bengio)
 
-## Modelli implementati
+## Implemented Models
 
-- `MLP` (baseline su feature non strutturate)
-- `GNN` con:
-  - layer `GCN` o `GAT`
-  - classificatore `linear` o `mlp`
-  - opzione `contrastive=True` per combinare Cross Entropy + Cosine Center Loss
-- `ProjectedGNN` (nel notebook): compressione iniziale delle feature prima del backbone GNN
+- `MLP` (baseline on non-graph features)
+- `GNN` with:
+  - `GCN` or `GAT` layers
+  - `linear` or `mlp` classifier head
+  - optional `contrastive=True` to combine Cross Entropy + Cosine Center Loss
+- `ProjectedGNN` (defined in the notebook): feature compression block before the GNN backbone
 
-## Requisiti
+## Requirements
 
-Dipendenze in `requirements.txt` (PyTorch, PyG, sklearn, pandas, matplotlib, ecc.).
+Dependencies are listed in `requirements.txt` (PyTorch, PyG, scikit-learn, pandas, matplotlib, etc.).
 
-> Nota: il file include il link wheel PyG CPU per Torch 2.8:
+> Note: the file includes the CPU PyG wheel source for Torch 2.8:
 > `--find-links https://data.pyg.org/whl/torch-2.8.0+cpu.html`
 
-## Setup rapido
+## Quick Setup
 
-Da root repository:
+From the repository root:
 
 ```bash
 python -m venv .venv
-source .venv/bin/activate  # su Windows: .venv\\Scripts\\activate
+source .venv/bin/activate  # Windows: .venv\\Scripts\\activate
 pip install --upgrade pip
 pip install -r requirements.txt
 ```
 
-## Come eseguire
+## How to Run
 
-Il workflow principale è il notebook:
+The main workflow is the notebook:
 
 ```bash
 jupyter notebook code/main.ipynb
 ```
 
-Eseguire le celle in ordine per riprodurre preprocessing, costruzione del grafo, training e analisi finale.
+Run cells in order to reproduce preprocessing, graph construction, training, and final analysis.
 
-## Note utili
+## Notes
 
-- Il codice è pensato principalmente per esecuzione su **CPU** (configurazione di default nel notebook).
-- Le utility di training (`code/utils.py`) usano early stopping (`max_epochs=500`, `patience=20` per default).
-- Non è presente una suite di test automatizzati dedicata: la validazione è centrata sugli esperimenti nel notebook.
+- The code is primarily configured for **CPU** execution (default notebook setup).
+- Training utilities in `code/utils.py` use early stopping (`max_epochs=500`, `patience=20` by default).
+- There is no dedicated automated test suite; validation is centered on notebook experiments.
 
-## Licenza
+## License
 
-Progetto rilasciato sotto licenza **MIT**. Vedi `LICENSE`.
+This project is released under the **MIT** License. See `LICENSE`.
