@@ -1,0 +1,10 @@
+cff-version: 1.2.0
+title: "GNN Node Classification on Gene Expression (Luminal A vs Luminal B)"
+message: "If you use this software, please cite it using this metadata."
+type: software
+authors:
+  - family-names: "Carretti Vandelli"
+    given-names: "Francesco"
+repository-code: "https://github.com/fracrvn/GNN_NodeClassification_GeneExpression"
+license: "MIT"
+abstract: "Project for tumor subtype classification (Luminal A vs Luminal B) from gene expression profiles, comparing MLP, GCN, and GAT models with optional Cosine Center Loss."
