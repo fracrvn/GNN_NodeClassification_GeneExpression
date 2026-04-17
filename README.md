@@ -4,6 +4,14 @@ This project focuses on tumor subtype classification (Luminal A / Luminal B) fro
 
 It was developed for the **laboratory component of a university exam**.
 
+## Highlights
+
+- Binary node classification on gene expression data (**Luminal A vs Luminal B**).
+- End-to-end notebook workflow: EDA, graph construction, training, and statistical analysis.
+- Comparative study across **MLP**, **GCN**, and **GAT** architectures.
+- Optional contrastive training with **Cosine Center Loss**.
+- Reproducible evaluation with repeated stratified cross-validation and corrected statistical tests.
+
 ## Repository Contents
 
 ```text
